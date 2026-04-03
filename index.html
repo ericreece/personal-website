@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Name</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2a2a2a;
+      --text: #e8e8e8;
+      --muted: #888;
+      --accent: #7c6af7;
+      --accent-hover: #9d8fff;
+      --radius: 12px;
+    }
+
+    :root.light {
+      --bg: #f9f9f9;
+      --surface: #ffffff;
+      --border: #e4e4e4;
+      --text: #111111;
+      --muted: #666;
+      --accent: #5b4de0;
+      --accent-hover: #7c6af7;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-hover); }
+
+    /* ── Layout ── */
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 80px 24px 120px;
+    }
+
+    section { margin-bottom: 72px; }
+
+    /* ── Hero ── */
+    .hero { display: flex; align-items: center; gap: 28px; }
+
+    .avatar {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: var(--surface);
+      border: 2px solid var(--border);
+    }
+
+    .avatar-placeholder {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, #7c6af7 0%, #a855f7 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 600;
+      color: #fff;
+      border: 2px solid var(--border);
+    }
+
+    .hero-text h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    .hero-text .title {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .social-links a {
+      color: var(--muted);
+      font-size: 0.85rem;
+      transition: color 0.15s;
+    }
+
+    .social-links a:hover { color: var(--text); }
+
+    /* ── Theme toggle ── */
+    .theme-toggle {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      border-radius: 8px;
+      padding: 7px 10px;
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      transition: border-color 0.15s, color 0.15s;
+      z-index: 100;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    /* ── Bio ── */
+    .bio p {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 560px;
+    }
+
+    .bio p + p { margin-top: 12px; }
+
+    /* ── Section headings ── */
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    /* ── Projects ── */
+    .projects-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      transition: border-color 0.15s, transform 0.15s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .project-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      color: inherit;
+    }
+
+    .project-icon {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .project-info h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .project-info p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .project-info .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    /* ── Contact ── */
+    .contact-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-row { display: grid; gap: 14px; grid-template-columns: 1fr 1fr; }
+
+    @media (max-width: 480px) {
+      .form-row { grid-template-columns: 1fr; }
+      .hero { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    input, textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 0.9rem;
+      font-family: inherit;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.15s;
+      width: 100%;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+    }
+
+    textarea { min-height: 120px; }
+
+    button[type="submit"] {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 11px 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      justify-self: start;
+    }
+
+    button[type="submit"]:hover {
+      background: var(--accent-hover);
+    }
+
+    button[type="submit"]:active {
+      transform: scale(0.98);
+    }
+
+    .form-success {
+      display: none;
+      background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+      border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+      color: var(--accent-hover);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 0.9rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+  <div class="page">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="avatar-placeholder">E</div>
+      <div class="hero-text">
+        <h1>Eric Reece</h1>
+        <div class="title">Software Engineer &amp; Builder</div>
+        <div class="social-links">
+          <a href="https://github.com" target="_blank">GitHub</a>
+          <a href="https://twitter.com" target="_blank">Twitter</a>
+          <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bio -->
+    <section class="bio">
+      <p class="section-label">About</p>
+      <p>
+        I build things on the web — from small tools to production systems.
+        Interested in developer experience, AI tooling, and clean interfaces.
+      </p>
+      <p>
+        Currently working on side projects and exploring ways to make software
+        development faster and more enjoyable.
+      </p>
+    </section>
+
+    <!-- Projects -->
+    <section>
+      <p class="section-label">Projects</p>
+      <div class="projects-grid">
+
+        <a class="project-card" href="#" target="_blank">
+          <div class="project-icon">🔧</div>
+          <div class="project-info">
+            <h3>Project One</h3>
+            <p>A brief description of what this project does and the problem it solves.</p>
+            <div class="tags">
+              <span class="tag">TypeScript</span>
+              <span class="tag">React</span>
+              <span class="tag">Open Source</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="project-card" href="#" target="_blank">
+          <div class="project-icon">🤖</div>
+          <div class="project-info">
+            <h3>Project Two</h3>
+            <p>Another project description — keep it short and to the point.</p>
+            <div class="tags">
+              <span class="tag">Python</span>
+              <span class="tag">AI</span>
+              <span class="tag">CLI</span>
+            </div>
+          </div>
+        </a>
+
+        <a class="project-card" href="#" target="_blank">
+          <div class="project-icon">📦</div>
+          <div class="project-info">
+            <h3>Project Three</h3>
+            <p>What makes this one interesting or different from the rest.</p>
+            <div class="tags">
+              <span class="tag">Node.js</span>
+              <span class="tag">API</span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section>
+      <p class="section-label">Contact</p>
+      <form class="contact-form" id="contactForm" novalidate>
+        <div class="form-row">
+          <label>
+            Name
+            <input type="text" name="name" placeholder="Your name" required />
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
+        </div>
+        <label>
+          Subject
+          <input type="text" name="subject" placeholder="What's this about?" />
+        </label>
+        <label>
+          Message
+          <textarea name="message" placeholder="Say hello..." required></textarea>
+        </label>
+        <button type="submit">Send message</button>
+        <div class="form-success" id="formSuccess">
+          Message sent — I'll get back to you soon.
+        </div>
+      </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <span>© 2026 Eric Reece</span>
+      <span>Built with vanilla HTML &amp; CSS</span>
+    </footer>
+
+  </div>
+
+  <script>
+    // Theme toggle
+    const root = document.documentElement;
+    const toggleBtn = document.getElementById('themeToggle');
+
+    function getTheme() {
+      try { return localStorage.getItem('theme'); } catch { return null; }
+    }
+    function setTheme(v) {
+      try { localStorage.setItem('theme', v); } catch { /* storage blocked */ }
+    }
+
+    if (getTheme() === 'light') {
+      root.classList.add('light');
+      toggleBtn.textContent = '☀️';
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const isLight = root.classList.toggle('light');
+      toggleBtn.textContent = isLight ? '☀️' : '🌙';
+      setTheme(isLight ? 'light' : 'dark');
+    });
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const btn = this.querySelector('button[type="submit"]');
+      const success = document.getElementById('formSuccess');
+
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      // Replace this timeout with your actual form submission logic,
+      // e.g. fetch('/api/contact', { method: 'POST', body: new FormData(this) })
+      setTimeout(() => {
+        this.reset();
+        btn.style.display = 'none';
+        success.style.display = 'block';
+      }, 800);
+    });
+  </script>
+</body>
+</html>
